@@ -1,5 +1,5 @@
 // /src/GlobalState/SearchContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export const SearchContext = createContext();
@@ -23,7 +23,7 @@ export const SearchProvider = ({ children }) => {
 
             setLoading(true);
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/search?q=${debouncedQuery}`);
+                const res = await axios.get(`http://localhost:5000/api/products/search?q=${debouncedQuery}`);
                 setResults(res.data);
             } catch (err) {
                 console.error('Search error:', err);

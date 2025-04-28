@@ -25,7 +25,7 @@ const Footer = () => {
                         <Link to="/about-us" className="hover:underline">About Us</Link>
                         {/* <Link to="/store-locations" className="hover:underline">Store Locations</Link> */}
                         <Link to="/contact-us" className="hover:underline">Contact Us</Link>
-                        <a href="/search" className="hover:underline">Search</a> {/* No route for this yet */}
+                        <a href="#" className="hover:underline">Search</a> {/* No route for this yet */}
                     </div>
                 </div>
 

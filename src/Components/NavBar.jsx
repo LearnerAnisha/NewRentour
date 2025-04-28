@@ -57,8 +57,7 @@ const NavBar = ({ toggleCart }) => {
                                         </div>
                                         <hr className="my-1" />
                                         <Link
-                                            to={"/seller"}
-                                            // to={"https://rentour-seller-ruddy.vercel.app/"}
+                                            to={"https://rentour-seller-ruddy.vercel.app/"}
                                             className="w-full flex items-center gap-2 cursor-pointer text-left px-2 py-1 text-[12px] md:text-[16px] hover:bg-red-100 rounded"
                                         >
                                             <SiSellfy className='bg-green-500' />
