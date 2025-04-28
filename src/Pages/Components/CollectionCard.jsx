@@ -7,12 +7,12 @@ import "aos/dist/aos.css";
 const CollectionCard = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         const fetchTopSold = async () => {
             setIsLoading(true);
             try {
-                const baseUrl = import.meta.env.VITE_API_BASE_URL;
                 const res = await axios.get(`${baseUrl}/products/top-sold`, {
                     timeout: 10000,
                 });
@@ -28,7 +28,7 @@ const CollectionCard = () => {
         AOS.init({
             duration: 1000,
         });
-    }, []);
+    }, [baseUrl]);
 
     const skeletonCards = Array(3).fill(0).map((_, i) => (
         <div
@@ -59,7 +59,7 @@ const CollectionCard = () => {
                                 data-aos-delay={index * 100}
                             >
                                 <img
-                                    src={product.productAvatar}
+                                    src={`${baseUrl}${product.productAvatar}`}
                                     alt={product.name}
                                     loading="lazy"
                                     onError={(e) => {

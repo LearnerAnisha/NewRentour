@@ -10,10 +10,10 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [mainImage, setMainImage] = useState(null); // state to control main image
     const { addToCart } = useCart();
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
     // Fetch product details
     useEffect(() => {
-        const baseUrl = import.meta.env.VITE_API_BASE_URL;
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(`${baseUrl}/products/${id}`);
@@ -28,7 +28,7 @@ const ProductDetail = () => {
         };
 
         fetchProduct();
-    }, [id]);
+    }, [id, baseUrl]);
 
     if (loading) return <div className="p-6 text-center">Loading product...</div>;
     if (!product) return <div className="p-6 text-center text-red-500">Product not found.</div>;
@@ -40,9 +40,12 @@ const ProductDetail = () => {
                 {/* Main Image Display */}
                 <div className="w-full h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                     <img
-                        src={mainImage}
+                        src={`${baseUrl}${mainImage}`}
                         alt={product.name}
                         className="w-full h-full object-contain p-2"
+                        onError={(e) => {
+                            e.currentTarget.src = "/fallback.png";
+                        }}
                     />
                 </div>
 
@@ -55,9 +58,12 @@ const ProductDetail = () => {
                             className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-95" // 👈 hover:scale-95 = zoom out
                         >
                             <img
-                                src={img}
+                                src={`${baseUrl}${img}`}
                                 alt={`Thumbnail ${i}`}
                                 className="w-full h-full object-contain p-[2px] transition-transform duration-300"
+                                onError={(e) => {
+                                    e.currentTarget.src = "/fallback.png";
+                                }}
                             />
                         </div>
 
@@ -95,9 +101,12 @@ const ProductDetail = () => {
                             <div key={idx} className="border-t pt-3 mt-3">
                                 <div className="flex items-center gap-2">
                                     <img
-                                        src={review.profileImg}
+                                        src={`${baseUrl}${review.profileImg}`}
                                         alt="user"
                                         className="w-8 h-8 object-contain rounded-full"
+                                        onError={(e) => {
+                                            e.currentTarget.src = "/fallback.png";
+                                        }}
                                     />
                                     <p className="font-medium">{review.user}</p>
                                 </div>

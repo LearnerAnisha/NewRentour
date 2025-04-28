@@ -8,12 +8,12 @@ const NewArrivals = () => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [typedText, setTypedText] = useState("");
     const typingInterval = useRef(null);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         const fetchNewArrivals = async () => {
             setIsLoading(true);
             try {
-                const baseUrl = import.meta.env.VITE_API_BASE_URL;
                 const res = await axios.get(`${baseUrl}/products/new-arrivals`, {
                     timeout: 10000
                 });
@@ -26,7 +26,7 @@ const NewArrivals = () => {
         };
 
         fetchNewArrivals();
-    }, []);
+    }, [baseUrl]);
 
     const handleMouseEnter = (desc, index) => {
         clearInterval(typingInterval.current);
@@ -83,7 +83,7 @@ const NewArrivals = () => {
                                         onMouseLeave={handleMouseLeave}
                                     >
                                         <img
-                                            src={product.productAvatar}
+                                            src={`${baseUrl}${product.productAvatar}`}
                                             alt={product.name}
                                             loading="lazy"
                                             onError={(e) => {
