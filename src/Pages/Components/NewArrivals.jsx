@@ -8,12 +8,12 @@ const NewArrivals = () => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [typedText, setTypedText] = useState("");
     const typingInterval = useRef(null);
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
     useEffect(() => {
         const fetchNewArrivals = async () => {
             setIsLoading(true);
             try {
-
+                const baseUrl = import.meta.env.VITE_API_BASE_URL;
                 const res = await axios.get(`${baseUrl}/products/new-arrivals`, {
                     timeout: 10000
                 });
@@ -26,7 +26,7 @@ const NewArrivals = () => {
         };
 
         fetchNewArrivals();
-    }, [baseUrl]);
+    }, []);
 
     const handleMouseEnter = (desc, index) => {
         clearInterval(typingInterval.current);
@@ -83,7 +83,7 @@ const NewArrivals = () => {
                                         onMouseLeave={handleMouseLeave}
                                     >
                                         <img
-                                            src={`${baseUrl}${product.productAvatar}`}
+                                            src={product.productAvatar}
                                             alt={product.name}
                                             loading="lazy"
                                             onError={(e) => {
@@ -91,14 +91,13 @@ const NewArrivals = () => {
                                             }}
                                             className="w-full h-full object-contain transition-all !duration-[750ms] sm:ease-[cubic-bezier(0.25, 1, 0.5, 1)] sm:group-hover:scale-[1.1]"
                                         />
-                                        <div className="absolute inset-0 flex items-end justify-center group-hover:bg-opacity-40 hover:bg-[rgba(0,0,0,0.2)] hover:backdrop-blur-[5px] transition-all duration-100 ease-[cubic-bezier(0.25, 1, 0.5, 1)]">
-                                            <div className="p-3 text-white opacity-0 group-hover:animate-pulse group-hover:opacity-100 transform translate-y-6 group-hover:translate-y-0 transition-all duration-700 ease-[cubic-bezier(0.25, 1, 0.5, 1)] text-center">
-                                                <h3 className="font-semibold text-lg mb-1">{product.title}</h3>
-                                                <p className="text-sm whitespace-pre-wrap">
-                                                    {hoveredIndex === index ? typedText : ""}
-                                                </p>
+                                        <div className="absolute inset-0 flex items-center justify-center group-hover:bg-opacity-80 hover:bg-[rgba(0,0,0,0.4)] hover:backdrop-blur-[8px] transition-all duration-300 ease-out">
+                                            <div className="p-5 text-white opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-6 transition-all duration-500 ease-out text-center">
+                                                <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+                                                <p className="text-sm">{hoveredIndex === index ? typedText : ""}</p>
                                             </div>
                                         </div>
+
                                     </Link>
                                 ))}
                             </div>
