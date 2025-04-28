@@ -28,11 +28,6 @@ const UpdateForm = () => {
     const token = localStorage.getItem("authToken");
 
     useEffect(() => {
-        console.log("avatar preview", avatarPreview);
-        console.log("imamge previes", imagePreviews)
-    }, [avatarPreview, imagePreviews])
-
-    useEffect(() => {
         const fetchProduct = async () => {
             try {
                 const response = await axiosInstance.get(`/product/${productId}`);
@@ -121,10 +116,12 @@ const UpdateForm = () => {
             formData.append("offeredPrice", productData.offeredPrice);
             formData.append("features", productData.features);
 
+            // If new product avatar is uploaded, append it; else, use the existing one
             if (productData.productAvatar) {
                 formData.append("productAvatar", productData.productAvatar);
             }
 
+            // Handle the images: only append new images or unchanged ones
             productData.images.forEach((image) => {
                 formData.append("images", image);
             });

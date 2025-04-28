@@ -81,18 +81,36 @@ const ProductDetail = () => {
                     <p className="line-through text-gray-400">₹{product.originalPrice}</p>
                 </div>
 
-                <p className="text-sm text-gray-500">Stock: {product.stock}</p>
-
-                {/* Add to Cart Button */}
-                <div className="mt-4 flex gap-4 sm:gap-7">
-                    <button
-                        onClick={() => { addToCart(product.id, product.offeredPrice) }}
-                        className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
-                    >
-                        Add to Cart
-                    </button>
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-900 grow-1 ">Renter: {product.publisher_name ? product.publisher_name : "Not Available"}</p>
+                    <p className="text-sm text-gray-800 md:w-[25%]">Stock: {product.stock}</p>
                 </div>
 
+
+
+                {/* {features} */}
+                <div className="flex justify-between mt-3 md:mt-6">
+                    <div className="grow-1">
+                        <h1>Features</h1>
+                        {
+                            product.features?.length > 0 ? (
+                                product.features.map((feature, index) => (
+                                    <p key={index} className="text-sm text-gray-500">{feature}</p>
+                                ))
+                            ) : <p className="text-sm text-gray-500">No reviews yet.</p>
+                        }
+
+                    </div>
+                    {/* Add to Cart Button */}
+                    <div className="self-end">
+                        <button
+                            onClick={() => { addToCart(product.id, product.offeredPrice) }}
+                            className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
                 {/* Reviews Section */}
                 <div className="mt-6">
                     <h3 className="text-xl font-semibold mb-2">Reviews</h3>
