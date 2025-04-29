@@ -166,7 +166,7 @@ const AboutUs = () => {
                         Join thousands of satisfied customers enjoying premium electronics without the premium price.
                     </p>
                     <button className="bg-white text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors">
-                        Browse Available Devices
+                        Browse Available Products
                     </button>
                 </div>
             </div>

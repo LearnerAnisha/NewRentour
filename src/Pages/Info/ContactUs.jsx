@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ContactUs = () => {
+    const navigate = useNavigate();
+
+    const handleFAQClick = () => {
+        navigate('/faqs');
+    };
+
     return (
         <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
@@ -185,9 +192,12 @@ const ContactUs = () => {
                         </div>
                     </div>
                     <div className="mt-6">
-                        <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-900">
+                        <button 
+                            onClick={handleFAQClick}
+                            className="text-sm font-medium text-gray-700 hover:text-gray-900 hover:underline focus:outline-none"
+                        >
                             View all FAQs →
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
