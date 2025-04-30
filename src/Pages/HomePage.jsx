@@ -13,7 +13,7 @@ const HomePage = () => {
             once: true,
         });
     }, []);
-
+// updated
     return (
         <>
             {/* VideoBox component without scroll animation */}
@@ -123,7 +123,7 @@ const HomePage = () => {
                             <p className="text-gray-600 italic mb-4">
                                 "The camera equipment I rented was in perfect condition and helped me complete my client project on budget."
                             </p>
-                            <p className="text-gray-800 font-medium">— David R.</p>
+                            <p className="text-gray-800 font-medium">— David R.</p>    
                         </div>
                     </div>
                 </div>
