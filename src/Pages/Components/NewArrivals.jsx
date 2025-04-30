@@ -14,7 +14,7 @@ const NewArrivals = () => {
         const fetchNewArrivals = async () => {
             setIsLoading(true);
             try {
-                const res = await axios.get(`${baseUrl}/products/new-arrivals`, {
+                const res = await axios.get(`${baseUrl}/api/arrivals`, {
                     timeout: 10000
                 });
                 setFilteredProducts(res.data);
@@ -35,7 +35,7 @@ const NewArrivals = () => {
         let i = 0;
         typingInterval.current = setInterval(() => {
             setTypedText(prev => {
-                if (i < desc.length) {
+                if (i < desc?.length) {
                     const char = desc[i];
                     i++;
                     return prev + char;
@@ -76,15 +76,15 @@ const NewArrivals = () => {
                             <div className="flex flex-row flex-nowrap gap-3 px-4 sm:px-0 sm:flex-wrap sm:justify-center scroll-smooth snap-x">
                                 {filteredProducts.map((product, index) => (
                                     <Link
-                                        to={`${product.category}/${product.id}`}
+                                        to={`${product?.category}/${product.item_id}`}
                                         key={index}
                                         className="snap-start shrink-0 group bg-white relative min-w-[250px] min-h-[250px] w-[250px] h-[250px] p-5 sm:p-0 sm:w-[250px] sm:h-[320px] rounded-xl overflow-hidden shadow-lg transition-all duration-[750ms] sm:ease-[cubic-bezier(0.25, 1, 0.5, 1)] sm:hover:w-[350px] sm:hover:h-[360px] hover:z-10"
-                                        onMouseEnter={() => handleMouseEnter(product.description, index)}
+                                        onMouseEnter={() => handleMouseEnter(product.item_description, index)}
                                         onMouseLeave={handleMouseLeave}
                                     >
                                         <img
-                                            src={`${baseUrl}${product.productAvatar}`}
-                                            alt={product.name}
+                                            src={`${baseUrl}${product.productAvatar ? product.productAvatar : "/fallback.png"}`}
+                                            alt={product.item_name}
                                             loading="lazy"
                                             onError={(e) => {
                                                 e.currentTarget.src = "/fallback.png";
@@ -93,7 +93,7 @@ const NewArrivals = () => {
                                         />
                                         <div className="absolute inset-0 flex items-center justify-center group-hover:bg-opacity-80 hover:bg-[rgba(0,0,0,0.4)] hover:backdrop-blur-[8px] transition-all duration-300 ease-out">
                                             <div className="p-5 text-white opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-6 transition-all duration-500 ease-out text-center">
-                                                <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+                                                <h3 className="font-semibold text-lg mb-2">{product.item_name}</h3>
                                                 <p className="text-sm">{hoveredIndex === index ? typedText : ""}</p>
                                             </div>
                                         </div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import axiosInstance from "../../utils/axiosInstance";
 
 const CollectionCard = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -13,7 +13,7 @@ const CollectionCard = () => {
         const fetchTopSold = async () => {
             setIsLoading(true);
             try {
-                const res = await axios.get(`${baseUrl}/products/top-sold`, {
+                const res = await axiosInstance.get(`${baseUrl}/api/home`, {
                     timeout: 10000,
                 });
                 setFilteredProducts(res.data);
@@ -29,6 +29,7 @@ const CollectionCard = () => {
             duration: 1000,
         });
     }, [baseUrl]);
+    console.log("Filtered Products:", filteredProducts);
 
     const skeletonCards = Array(3).fill(0).map((_, i) => (
         <div
@@ -59,8 +60,8 @@ const CollectionCard = () => {
                                 data-aos-delay={index * 100}
                             >
                                 <img
-                                    src={`${baseUrl}${product.productAvatar}`}
-                                    alt={product.name}
+                                    src={`${baseUrl}${product.productAvatar ? product.productAvatar : "/fallback.png"}`}
+                                    alt={product.item_name}
                                     loading="lazy"
                                     onError={(e) => {
                                         e.currentTarget.src = "/fallback.png";
@@ -76,17 +77,17 @@ const CollectionCard = () => {
                                     data-aos="fade-up"
                                     data-aos-delay={index * 100 + 150}
                                 >
-                                    {product.name}
+                                    {product.item_name}
                                 </h2>
                                 <p
                                     className="text-[12px] sm:text-[14px] font-[400] text-gray-700 leading-relaxed"
                                     data-aos="fade-up"
                                     data-aos-delay={index * 100 + 300}
                                 >
-                                    {product.description}
+                                    {product.item_description}
                                 </p>
                                 <Link
-                                    to={`${product.category}/${product.id}`}
+                                    to={`${product.item_category}/${product.item_id}`}
                                     className="text-[13px] sm:text-[14px] mt-2 px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
                                     data-aos="fade-up"
                                     data-aos-delay={index * 100 + 450}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 const ProductList = ({ category }) => {
     const [products, setProducts] = useState([]);
@@ -13,11 +13,9 @@ const ProductList = ({ category }) => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/category/${category}`, {
-                    params: { sort, page, limit: 6 }
-                });
-                setProducts(res.data.products);
-                setTotalPages(res.data.totalPages);
+                const res = await axiosInstance.get(`${import.meta.env.VITE_API_BASE_URL}/api/getitems/`);
+                setProducts(res?.data);
+                setTotalPages(res.data.totalPages || 1);
             } catch (err) {
                 console.error("Error fetching category products:", err);
                 setProducts([]);
@@ -28,7 +26,7 @@ const ProductList = ({ category }) => {
 
         fetchProducts();
     }, [category, page, sort]);
-
+    console.log("Products:", products);
     const handleSortChange = (e) => setSort(e.target.value);
 
     return (
@@ -46,7 +44,7 @@ const ProductList = ({ category }) => {
                 <p>Loading...</p>
             ) : products.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-5">
-                    {products.map((p) => <ProductCard key={p.id} product={p} />)}
+                    {products.map((p) => <ProductCard key={p.item_id} product={p} />)}
                 </div>
             ) : (
                 <p>No products found in this category.</p>

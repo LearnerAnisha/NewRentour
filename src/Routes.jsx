@@ -50,23 +50,15 @@ const LazyLoad = (Component) => (
   </Suspense>
 );
 
-// For Product Dynamic Routings
-const productRoutes = [
-  "collections",
-  "new-arrivals",
-  "mobiles",
-  "laptops",
-  "cameras",
-  "ipads",
-  "headphones",
-  "drones",
+
+const dynamicProductRoutes = [
+  {
+    path: "/product/:category/:id", // Matches any path ending with /<id>
+    element: LazyLoad(ProductDetail),
+    errorElement: <ErrorBoundary />,
+  },
 ];
 
-const dynamicProductRoutes = productRoutes.map((path) => ({
-  path: `${path}/:id`,
-  element: LazyLoad(ProductDetail),
-  errorElement: <ErrorBoundary />,
-}));
 
 
 

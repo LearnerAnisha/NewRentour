@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useCart } from "../../GlobalState/CartContext";
 import { IoIosStar } from "react-icons/io";
 import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -16,7 +17,7 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(`${baseUrl}/products/${id}`);
+                const res = await axiosInstance.get(`${baseUrl}/api/getitems/${id}`);
                 setProduct(res.data);
                 setMainImage(res.data.productAvatar); // set initial main image
             } catch (err) {
@@ -41,7 +42,7 @@ const ProductDetail = () => {
                 <div className="w-full h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                     <img
                         src={`${baseUrl}${mainImage}`}
-                        alt={product.name}
+                        alt={product.item_name}
                         className="w-full h-full object-contain p-2"
                         onError={(e) => {
                             e.currentTarget.src = "/fallback.png";
@@ -73,17 +74,17 @@ const ProductDetail = () => {
 
             {/* Right Section - Product Info */}
             <div>
-                <h1 className="text-3xl font-bold">{product.name}</h1>
-                <p className="text-gray-600 my-3">{product.description}</p>
+                <h1 className="text-3xl font-bold">{product.item_name}</h1>
+                <p className="text-gray-600 my-3">{product.item_description}</p>
 
                 <div className="my-4">
-                    <p className="text-xl text-green-600 font-semibold">₹{product.offeredPrice}</p>
-                    <p className="line-through text-gray-400">₹{product.originalPrice}</p>
+                    <p className="text-xl text-green-600 font-semibold">₹{product.final_item_price}</p>
+                    <p className="line-through text-gray-400">₹{product.offered_item_price}</p>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <p className="text-sm text-gray-900 grow-1 ">Renter: {product.publisher_name ? product.publisher_name : "Not Available"}</p>
-                    <p className="text-sm text-gray-800 md:w-[25%]">Stock: {product.stock}</p>
+                    <p className="text-sm text-gray-800 md:w-[25%]">Stock: {product.Quantity}</p>
                 </div>
 
 
@@ -92,17 +93,16 @@ const ProductDetail = () => {
                 <div className="flex justify-between mt-3 md:mt-6">
                     <div className="grow-1">
                         <h1>Features</h1>
-                        {
-                            product.features?.length > 0 ? (
-                                product.features.map((feature, index) => (
-                                    <p key={index} className="text-sm text-gray-500">{feature}</p>
-                                ))
-                            ) : <p className="text-sm text-gray-500">No reviews yet.</p>
-                        }
+                        <ul className="list-disc list-inside text-sm text-gray-600 mt-2">
+                            {product.width && <li>Width: {product.width} cm</li>}
+                            {product.height && <li>Height: {product.height} cm</li>}
+                            {product.weight && <li>Weight: {product.weight} kg</li>}
+                            {product.length && <li>Length: {product.length} cm</li>}
+                        </ul>
 
                     </div>
                     {/* Add to Cart Button */}
-                    <div className="self-end">
+                    <div className="self-end w-fit min-w-fit">
                         <button
                             onClick={() => { addToCart(product.id, product.offeredPrice) }}
                             className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"

@@ -2,14 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./form.css";
-import { FaGooglePlusG, FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { z } from "zod";
 
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../GlobalState/AuthContext";
-import { GoEye, GoEyeClosed } from "react-icons/go";
 import Login from "./Login";
-import SignUp from "./SignUp";
 import Signup from "./SignUp";
 
 const fullNameSchema = z.string()
@@ -114,12 +111,19 @@ const AuthForm = () => {
             setErrors({});
             try {
                 const dataToSend = formData;
-                const endpoint = type === "Sign Up" ? `${api}/signup` : `${api}/login`;
-                const { data } = await axios.post(endpoint, dataToSend);
-                const authToken = data?.tokens?.access;
-                const authUser = data?.user;
-                login(authUser, authToken);
-                navigate("/");
+                const endpoint = type === "Sign Up" ? `${api}/signup/` : `${api}/login/`;
+                const response = await axios.post(endpoint, dataToSend);
+                const data = await response.data;
+                console.log("Response data:", response);
+                if (type === "Sign Up" && response.status === 201) {
+                    setIsSignUp(false);
+                    notify("Account created successfully! Please log in.");
+                } else if (type === "Sign In" && response.status === 200) {
+                    const authToken = data?.tokens?.access || null;
+                    const authUser = { name: formData.username };
+                    login(authUser, authToken);
+                    navigate("/");
+                }
             } catch (error) {
                 const errorMessage =
                     error?.response?.data?.username?.[0] ||
