@@ -18,21 +18,25 @@ const ProductCategory = () => {
             // icon: "/featureproducts/camera.svg",
             path: "/collections/cameras"
         },
+        // {
+        //     name: "iPads",
+        //     // icon: "/featureproducts/tablet.svg",
+        //     path: "/collections/ipads"
+        // },
+        // {
+        //     name: "Headphones",
+        //     // icon: "/featureproducts/headphone.svg",
+        //     path: "/collections/headphones"
+        // },
+        // {
+        //     name: "Drones",
+        //     // icon: "/featureproducts/drone.svg",
+        //     path: "/collections/drones"
+        // },
         {
-            name: "iPads",
-            // icon: "/featureproducts/tablet.svg",
-            path: "/collections/ipads"
-        },
-        {
-            name: "Headphones",
-            // icon: "/featureproducts/headphone.svg",
-            path: "/collections/headphones"
-        },
-        {
-            name: "Drones",
-            // icon: "/featureproducts/drone.svg",
-            path: "/collections/drones"
-        },
+            name: "Others",
+            path: "/collections/others"
+        }
     ];
     return (
         <div className="h-fit sm:h-full flex shrink-0 flex-wrap items-center justify-center w-full gap-x-4 sm:gap-x-7">

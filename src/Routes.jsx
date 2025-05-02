@@ -24,6 +24,7 @@ const Cameras = lazy(() => import("./Pages/Categories/Cameras"));
 const Tablets = lazy(() => import("./Pages/Categories/Tablets"));
 const Drones = lazy(() => import("./Pages/Categories/Drones"));
 const Headphones = lazy(() => import("./Pages/Categories/Headphones"));
+const Others = lazy(() => import("./Pages/Categories/Others"));
 
 // Particular ProductDetail
 const ProductDetail = lazy(() => import("./Pages/Product/ProductDetail"));
@@ -86,6 +87,7 @@ const Router = createBrowserRouter([
           { path: "headphones", element: LazyLoad(Headphones) },
           { path: "ipads", element: LazyLoad(Tablets) },
           { path: "drones", element: LazyLoad(Drones) },
+          { path: "others", element: LazyLoad(Others) },
         ],
       },
 

@@ -5,7 +5,7 @@ const Laptops = () => {
     return (
         <div>
             <h1 className="text-3xl font-semibold text-center my-6">Laptops</h1>
-            <ProductList category="laptops" />
+            <ProductList category={["Laptops", "Monitors"]} />
         </div>
     )
 }

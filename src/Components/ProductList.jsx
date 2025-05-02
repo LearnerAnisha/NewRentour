@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import axiosInstance from "../utils/axiosInstance";
 
 const ProductList = ({ category }) => {
-    const [products, setProducts] = useState([]);
+    const [Foundproducts, setFoundProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState("date_desc");
     const [totalPages, setTotalPages] = useState(1);
@@ -14,11 +14,21 @@ const ProductList = ({ category }) => {
             setLoading(true);
             try {
                 const res = await axiosInstance.get(`${import.meta.env.VITE_API_BASE_URL}/api/getitems/`);
-                setProducts(res?.data);
-                setTotalPages(res.data.totalPages || 1);
+                const allProducts = res?.data || [];
+
+                const filtered = Array.isArray(category) && category.length > 0
+                    ? allProducts.filter((p) =>
+                        p.item_category && category.some(cat =>
+                            p.item_category.toLowerCase() === cat.toLowerCase()
+                        )
+                    )
+                    : [];
+
+                setFoundProducts(filtered);
+                setTotalPages(Math.ceil(filtered.length / 12)); // Assuming 12 items per page
             } catch (err) {
                 console.error("Error fetching category products:", err);
-                setProducts([]);
+                setFoundProducts([]);
             } finally {
                 setLoading(false);
             }
@@ -26,7 +36,7 @@ const ProductList = ({ category }) => {
 
         fetchProducts();
     }, [category, page, sort]);
-    console.log("Products:", products);
+
     const handleSortChange = (e) => setSort(e.target.value);
 
     return (
@@ -42,9 +52,9 @@ const ProductList = ({ category }) => {
 
             {loading ? (
                 <p>Loading...</p>
-            ) : products.length > 0 ? (
+            ) : Foundproducts.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-5">
-                    {products.map((p) => <ProductCard key={p.item_id} product={p} />)}
+                    {Foundproducts.map((p) => <ProductCard key={p.item_id} product={p} />)}
                 </div>
             ) : (
                 <p>No products found in this category.</p>
