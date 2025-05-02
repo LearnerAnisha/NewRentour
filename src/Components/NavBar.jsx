@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProductCategory from './ProductsCategories';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../GlobalState/CartContext';
 import { FaUser } from 'react-icons/fa6';
 import { BsSearch } from "react-icons/bs";
@@ -18,6 +18,8 @@ const NavBar = ({ toggleCart }) => {
 
     const [showUserMenu, setShowUserMenu] = useState(false);
     const userRef = useRef();
+    const location = useLocation();
+    const isRoot = location.pathname === "/";
 
     useEffect(() => {
         const handler = (e) => {
@@ -30,12 +32,12 @@ const NavBar = ({ toggleCart }) => {
     }, []);
 
     return (
-        <div className='w-full h-[23dvh] sm:h-[25dvh] bg-white'>
+        <div className={`w-full bg-white ${isRoot ? "h-fit sm:h-fit pb-2" : "h-[23dvh] sm:h-[25dvh]"}`}>
             <div className='bg-black text-white w-full h-fit sm:h-[20%] text-[11px] sm:text-[13px] !py-[5px] text-center'>
                 NEW ARRIVALS - SPRING-SUMMER 25 - PREMIUM LINEN SUMMER COLLECTIONS
             </div>
 
-            <div className='relative flex items-center w-full h-[40%] sm:h-[50%]'>
+            <div className='relative flex items-center w-full h-[40%] sm:h-[50%] py-2'>
                 <Link to="/" className='w-full z-1 flex items-center gap-2 sm:gap-4 px-[10px] justify-start md:justify-center'>
                     <img src="/logo.svg" alt="logo" className='h-full w-[30px] sm:w-[40px] md:w-[50px] object-cover ' />
                     <h1 className='lavishly-yours-regular text-3xl sm:text-5xl md:text-6xl font-bold'>RenTour</h1>
@@ -103,10 +105,12 @@ const NavBar = ({ toggleCart }) => {
                 </div>
             </div>
 
-            <div className='w-full h-[30%]'>
-                <ProductCategory />
-            </div>
-        </div>
+            {!isRoot && (
+                <div className="w-full h-[30%]">
+                    <ProductCategory />
+                </div>
+            )}
+        </div >
     );
 };
 
