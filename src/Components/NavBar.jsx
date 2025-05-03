@@ -7,12 +7,14 @@ import { BsSearch } from "react-icons/bs";
 import { GiSelfLove } from "react-icons/gi";
 import { BsCart4 } from "react-icons/bs";
 import { useWishlist } from '../GlobalState/WishContext';
-import { useAuth } from '../GlobalState/AuthContext'; // Add this line based on your setup
+import { useAuth } from '../GlobalState/AuthContext';
 import { SiSellfy } from "react-icons/si";
+
 const NavBar = ({ toggleCart }) => {
     const { cartItems } = useCart();
     const { wishlistItems } = useWishlist();
-    const { user, logout, isLoggedIn } = useAuth(); // Assuming you expose these from your AuthContext
+    const { user, logout, isLoggedIn } = useAuth();
+
     const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
     const wishListItemCount = wishlistItems.length;
 
@@ -38,36 +40,38 @@ const NavBar = ({ toggleCart }) => {
             </div>
 
             <div className='relative flex items-center w-full h-[40%] sm:h-[50%] py-2'>
-                <Link to="/" className='w-full z-1 flex items-center gap-2 sm:gap-4 px-[10px] justify-start md:justify-center'>
-                    <img src="/logo.svg" alt="logo" className='h-full w-[30px] sm:w-[40px] md:w-[50px] object-cover ' />
+                <Link to="/" className='w-full z-[1] flex items-center gap-2 sm:gap-4 px-[10px] justify-start md:justify-center'>
+                    <img src="/logo.svg" alt="logo" className='h-full w-[30px] sm:w-[40px] md:w-[50px] object-cover' />
                     <h1 className='lavishly-yours-regular text-3xl sm:text-5xl md:text-6xl font-bold'>RenTour</h1>
                 </Link>
 
-                <div className='absolute z-10 right-4 h-full flex top-[50%] -translate-y-[50%] items-center justify-end gap-5 sm:gap-x-8 text-[18px] sm:text-[24px]'>
-                    <div className="relative" ref={userRef}>
+                <div className='absolute z-50 right-4 h-full flex top-[50%] -translate-y-[50%] items-center justify-end gap-5 sm:gap-x-8 text-[18px] sm:text-[24px]'>
+                    <div className="relative z-50" ref={userRef}>
                         {isLoggedIn ? (
                             <>
-                                <button onClick={() => setShowUserMenu(!showUserMenu)} className='cursor-pointer'>
+                                <button
+                                    onClick={() => setShowUserMenu(!showUserMenu)}
+                                    className='cursor-pointer'
+                                >
                                     <FaUser />
                                 </button>
                                 {showUserMenu && (
-                                    <div className="absolute right-0 mt-2 w-auto min-w-fit bg-white border rounded-lg shadow p-2 z-50">
-                                        <div
-                                            className="font-medium px-2 py-1 flex items-center gap-1 flex-nowrap shrink-0 w-fit text-[12px] md:text-[16px]">
+                                    <div className="absolute right-0 mt-2 w-auto min-w-fit bg-white border rounded-lg shadow p-2 z-50 pointer-events-auto">
+                                        <div className="font-medium px-2 py-1 flex items-center gap-1 text-[12px] md:text-[16px]">
                                             <p>👋</p>
-                                            <p> {user?.username || user?.name || "user"}</p>
+                                            <p>{user?.username || user?.name || "user"}</p>
                                         </div>
                                         <hr className="my-1" />
                                         <Link
-                                            to={"https://rentour-seller-ruddy.vercel.app/"}
-                                            className="w-full flex items-center gap-2 cursor-pointer text-left px-2 py-1 text-[12px] md:text-[16px] hover:bg-red-100 rounded"
+                                            to="https://rentour-seller-ruddy.vercel.app/"
+                                            className="w-full flex items-center gap-2 text-left px-2 py-1 text-[12px] md:text-[16px] hover:bg-red-100 rounded"
                                         >
-                                            <SiSellfy className='bg-green-500' />
+                                            <SiSellfy className='text-green-500' />
                                             Seller
                                         </Link>
                                         <button
                                             onClick={logout}
-                                            className="w-full cursor-pointer text-left px-2 py-1 text-red-600 text-[12px] md:text-[16px] hover:bg-red-100 rounded"
+                                            className="w-full text-left px-2 py-1 text-red-600 text-[12px] md:text-[16px] hover:bg-red-100 rounded"
                                         >
                                             Logout
                                         </button>
@@ -81,7 +85,7 @@ const NavBar = ({ toggleCart }) => {
                         )}
                     </div>
 
-                    <Link to={"/search"} className="">
+                    <Link to="/search">
                         <BsSearch />
                     </Link>
 
@@ -110,7 +114,7 @@ const NavBar = ({ toggleCart }) => {
                     <ProductCategory />
                 </div>
             )}
-        </div >
+        </div>
     );
 };
 
