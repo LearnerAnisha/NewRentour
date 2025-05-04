@@ -9,7 +9,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mainImage, setMainImage] = useState(null); // state to control main image
-    const { addToCart } = useCart();
+    const { addToCart, cartLoading } = useCart();
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
     // Fetch product details
@@ -18,7 +18,7 @@ const ProductDetail = () => {
             try {
                 const res = await axiosInstance.get(`${baseUrl}/api/getitems/${id}`);
                 setProduct(res.data);
-                setMainImage(res.data.productAvatar); // set initial main image
+                setMainImage(res.data.productAvatar);
             } catch (err) {
                 console.error("Error fetching product:", err);
                 setProduct(null);
@@ -103,10 +103,11 @@ const ProductDetail = () => {
                     {/* Add to Cart Button */}
                     <div className="self-end w-fit min-w-fit">
                         <button
+                            disabled={cartLoading}
                             onClick={() => { addToCart(product.item_id) }}
                             className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
                         >
-                            Add to Cart
+                            {cartLoading ? "Adding..." : "  Add to Cart"}
                         </button>
                     </div>
                 </div>

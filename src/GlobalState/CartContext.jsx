@@ -12,129 +12,100 @@ export const CartProvider = ({ children }) => {
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-  // const hasSynced = useRef(false);
+  const [cartLoading, setLoading] = useState(false);
 
   const toggleCart = () => {
     setIsCartOpen((prev) => !prev);
   };
 
-  // Save to localStorage on changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Group duplicate entries by item_id
-  // const normalizeCart = (rawCart) => {
-  //   const grouped = {};
-
-  //   rawCart.forEach(({ home_item, quantity }) => {
-  //     const id = home_item.item_id;
-  //     if (!grouped[id]) {
-  //       grouped[id] = {
-  //         productid: id,
-  //         quantity,
-  //         home_item,
-  //       };
-  //     } else {
-  //       grouped[id].quantity += quantity;
-  //     }
-  //   });
-
-  //   return Object.values(grouped);
-  // };
-
-  // Sync on login or first load
   useEffect(() => {
-    const syncCartWithBackend = async () => {
-      if (isLoggedIn) {
-        try {
-          const res = await axiosInstance.get(`/cart/summary/`);
-          // const backendCart = normalizeCart(res.data || []);
-          setCartItems(res.data);
-          // localStorage.setItem("cart", JSON.stringify(backendCart));
-
-          // hasSynced.current = true;
-        } catch (error) {
-          console.error("Cart sync failed:", error);
-        }
-      }
-    };
-
-    syncCartWithBackend();
+    if (isLoggedIn) fetchCartItems();
   }, [isLoggedIn]);
+
+  const fetchCartItems = async () => {
+    try {
+      const res = await axiosInstance.get(`/cart/summary/`);
+      setCartItems(res.data);
+    } catch (error) {
+      console.error("Cart sync failed:", error);
+    }
+  };
 
   const addToCart = async (productid) => {
     if (!isLoggedIn) return;
+    setLoading(true);
     const existingItem = cartItems.find(item => item.home_item?.item_id === productid);
     if (existingItem) {
-      removeFromCart(existingItem.id);
+      await removeFromCart(existingItem.id, false);
     }
-    const quantity = existingItem ? existingItem?.quantity + 1 : 1;
+    const quantity = existingItem ? existingItem.quantity + 1 : 1;
 
     try {
-      await axiosInstance.post("/cart/add/", {
+      const res = await axiosInstance.post("/cart/add/", {
         item_id: productid,
-        quantity: quantity,
+        quantity,
       });
+
+      if (res?.status === 201 || res?.data?.status === "success") {
+        await fetchCartItems();
+      }
     } catch (err) {
       console.error("Failed to add item to cart:", err);
+    } finally {
+      setLoading(false);
     }
   };
-
 
   const updateQuantity = async (productid) => {
     if (!isLoggedIn) return;
+    setLoading(true);
     const existingItem = cartItems.find(item => item.home_item?.item_id === productid);
-    if (existingItem) {
-      removeFromCart(existingItem.id);
+    if (!existingItem) return;
+
+    const newQty = existingItem.quantity - 1;
+    await removeFromCart(existingItem.id, false);
+
+    if (newQty < 1) {
+      await fetchCartItems();
+      setLoading(false);
+      return;
     }
-    const quantity = existingItem ? existingItem?.quantity - 1 : 1;
 
     try {
-      await axiosInstance.post("/cart/add/", {
+      const res = await axiosInstance.post("/cart/add/", {
         item_id: productid,
-        quantity: quantity,
+        quantity: newQty,
       });
-    } catch (err) {
-      console.error("Failed to subtract item to cart:", err);
-    }
-  };
 
-
-  const removeFromCart = async (productid) => {
-    // const updatedCart = cartItems.filter((item) => item.productid !== productid);
-    // setCartItems(updatedCart);
-    // localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-    if (isLoggedIn) {
-      try {
-        await axiosInstance.delete(`/cart/remove/${productid}/`);
-      } catch (err) {
-        console.error("Failed to remove item from cart:", err);
+      if (res?.status === 201 || res?.data?.status === "success") {
+        await fetchCartItems();
       }
+    } catch (err) {
+      console.error("Failed to update quantity:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // const updateQuantity = async (productid, quantity) => {
-  //   if (quantity <= 0) return removeFromCart(productid);
+  const removeFromCart = async (productid, shouldRefresh = true) => {
+    if (!isLoggedIn) return;
+    setLoading(true);
+    try {
+      const res = await axiosInstance.delete(`/cart/remove/${productid}/`);
 
-  //   const updatedCart = cartItems.map((item) =>
-  //     item.productid === productid ? { ...item, quantity } : item
-  //   );
-  //   setCartItems(updatedCart);
-  //   localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-  //   if (isLoggedIn) {
-  //     try {
-  //       await axiosInstance.post("/cart/add/", {
-  //         item_id: productid,
-  //         quantity,
-  //       });
-  //     } catch (err) {
-  //       console.error("Failed to update quantity:", err);
-  //     }
-  //   }
-  // };
+      if (res?.status === 204 && shouldRefresh) {
+        await fetchCartItems();
+      }
+    } catch (err) {
+      console.error("Failed to remove item from cart:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <CartContext.Provider
@@ -142,6 +113,7 @@ export const CartProvider = ({ children }) => {
         isCartOpen,
         toggleCart,
         cartItems,
+        cartLoading,
         addToCart,
         removeFromCart,
         updateQuantity,
