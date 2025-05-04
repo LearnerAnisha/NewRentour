@@ -13,10 +13,15 @@ const CollectionCard = () => {
         const fetchTopSold = async () => {
             setIsLoading(true);
             try {
-                const res = await axiosInstance.get(`${baseUrl}/api/home`, { timeout: 10000 });
-                const allProducts = res.data;
+                const [productsRes, imagesRes] = await Promise.all([
+                    axiosInstance.get(`${baseUrl}/api/home`, { timeout: 10000 }),
+                    axiosInstance.get(`${baseUrl}/api/ph`, { timeout: 10000 }),
+                ]);
 
-                // Pick one product per unique category (first match)
+                const allProducts = productsRes.data;
+                const images = imagesRes.data;
+
+                // Pick one product per unique category
                 const seen = new Set();
                 const uniqueCategoryProducts = [];
 
@@ -24,7 +29,19 @@ const CollectionCard = () => {
                     const cat = product.item_category?.toLowerCase();
                     if (cat && !seen.has(cat)) {
                         seen.add(cat);
-                        uniqueCategoryProducts.push(product);
+
+                        const productWords = product.item_name?.toLowerCase().split(/\s+/) || [];
+
+                        // Match image if any word from product name exists in image name
+                        const matchedImage = images.find((img) => {
+                            const imageName = img.item_name?.toLowerCase() || "";
+                            return productWords.some((word) => imageName.includes(word));
+                        });
+
+                        uniqueCategoryProducts.push({
+                            ...product,
+                            productAvatar: matchedImage?.item_photo || product.productAvatar,
+                        });
                     }
                 }
 
@@ -39,6 +56,7 @@ const CollectionCard = () => {
         fetchTopSold();
         AOS.init({ duration: 1000 });
     }, [baseUrl]);
+
 
     const skeletonCards = Array(3).fill(0).map((_, i) => (
         <div
@@ -72,7 +90,7 @@ const CollectionCard = () => {
                                     data-aos-delay={index * 100}
                                 >
                                     <img
-                                        src={`${baseUrl}${product.productAvatar || "/fallback.png"}`}
+                                        src={`${product.productAvatar ? product.productAvatar : "/fallback.png"}`}
                                         alt={product.item_name}
                                         loading="lazy"
                                         onError={(e) => {

@@ -14,15 +14,27 @@ const NewArrivals = () => {
         const fetchNewArrivals = async () => {
             setIsLoading(true);
             try {
-                const res = await axios.get(`${baseUrl}/api/arrivals`, {
-                    timeout: 10000
-                });
+                const [arrivalsRes, imagesRes] = await Promise.all([
+                    axios.get(`${baseUrl}/api/arrivals`, { timeout: 10000 }),
+                    axios.get(`${baseUrl}/api/ph`, { timeout: 10000 }),
+                ]);
 
-                const sortedByPostedAt = res.data
+                const sortedArrivals = arrivalsRes.data
                     .sort((a, b) => new Date(b.posted_at) - new Date(a.posted_at))
                     .slice(0, 4);
 
-                setFilteredProducts(sortedByPostedAt);
+                const images = imagesRes.data;
+
+                // Match product.item_name with image.item_name
+                const merged = sortedArrivals.map(product => {
+                    const matchedImage = images.find(img => img.item_name === product.item_name);
+                    return {
+                        ...product,
+                        productAvatar: matchedImage?.item_photo || product.productAvatar
+                    };
+                });
+
+                setFilteredProducts(merged);
             } catch (error) {
                 console.error("Error fetching new arrivals:", error);
             } finally {
@@ -32,6 +44,7 @@ const NewArrivals = () => {
 
         fetchNewArrivals();
     }, [baseUrl]);
+
 
     const handleMouseEnter = (desc, index) => {
         clearInterval(typingInterval.current);
@@ -88,7 +101,7 @@ const NewArrivals = () => {
                                         onMouseLeave={handleMouseLeave}
                                     >
                                         <img
-                                            src={`${baseUrl}${product.productAvatar ? product.productAvatar : "/fallback.png"}`}
+                                            src={`${product.productAvatar ? product.productAvatar : "/fallback.png"}`}
                                             alt={product.item_name}
                                             loading="lazy"
                                             onError={(e) => {
