@@ -17,7 +17,12 @@ const NewArrivals = () => {
                 const res = await axios.get(`${baseUrl}/api/arrivals`, {
                     timeout: 10000
                 });
-                setFilteredProducts(res.data);
+
+                const sortedByPostedAt = res.data
+                    .sort((a, b) => new Date(b.posted_at) - new Date(a.posted_at))
+                    .slice(0, 4);
+
+                setFilteredProducts(sortedByPostedAt);
             } catch (error) {
                 console.error("Error fetching new arrivals:", error);
             } finally {
@@ -76,7 +81,7 @@ const NewArrivals = () => {
                             <div className="flex flex-row flex-nowrap gap-3 px-4 sm:px-0 sm:flex-wrap sm:justify-center scroll-smooth snap-x">
                                 {filteredProducts.map((product, index) => (
                                     <Link
-                                        to={`${product?.category}/${product.item_id}`}
+                                        to={`product/${product?.item_category}/${product.item_id}`}
                                         key={index}
                                         className="snap-start shrink-0 group bg-white relative min-w-[250px] min-h-[250px] w-[250px] h-[250px] p-5 sm:p-0 sm:w-[250px] sm:h-[320px] rounded-xl overflow-hidden shadow-lg transition-all duration-[750ms] sm:ease-[cubic-bezier(0.25, 1, 0.5, 1)] sm:hover:w-[350px] sm:hover:h-[360px] hover:z-10"
                                         onMouseEnter={() => handleMouseEnter(product.item_description, index)}
