@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../../GlobalState/CartContext";
 import { IoIosStar } from "react-icons/io";
-import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
 
 const ProductDetail = () => {
@@ -104,7 +103,7 @@ const ProductDetail = () => {
                     {/* Add to Cart Button */}
                     <div className="self-end w-fit min-w-fit">
                         <button
-                            onClick={() => { addToCart(product.id, product.offeredPrice) }}
+                            onClick={() => { addToCart(product.item_id) }}
                             className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
                         >
                             Add to Cart
