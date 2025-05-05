@@ -10,7 +10,7 @@ const AuthForm = lazy(() => import("./Auth/AuthForm"));
 
 
 // Wishlist page
-const Wishlist = lazy(() => import('./Components/Wishlist'));
+// const Wishlist = lazy(() => import('./Components/Wishlist'));
 
 // Lazy load all secondary pages
 const Collections = lazy(() => import("./Pages/Collections/Collections"));
@@ -72,7 +72,7 @@ const Router = createBrowserRouter([
     errorElement: <ErrorBoundary />, // Added Error Boundary
     children: [
       { index: true, element: <HomePage /> },
-      { path: "wishlist", element: LazyLoad(Wishlist) },
+      // { path: "wishlist", element: LazyLoad(Wishlist) },
       { path: "auth", element: LazyLoad(AuthForm) },
       // Collections & Products Routes
       {

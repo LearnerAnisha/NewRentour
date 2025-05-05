@@ -1,27 +1,12 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { useWishlist } from "../GlobalState/WishContext";
 
 const ProductCard = ({ product }) => {
-    const { wishlistItems, toggleWishlist, } = useWishlist();
-    const isWishlisted = wishlistItems.some((item) => item.productId === product.id);
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
     return (
         <div className="relative group w-[90%] sm:min-w-[22%] sm:w-[300px] bg-white rounded-lg h-[55dvh] shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-            {/* Wishlist Icon */}
-            <div
-                onClick={() => toggleWishlist(product.item_id)}
-                className="absolute top-2 right-2 hover:bg-white rounded-full p-2 shadow-md cursor-pointer z-10"
-            >
-                {isWishlisted ? (
-                    <FaHeart className="text-red-500" />
-                ) : (
-                    <FaRegHeart className="text-black" />
-                )}
-            </div>
-
+            
             {/* Badge */}
             {product.badge && (
                 <div className="absolute top-2 left-2 bg-black text-white text-xs font-bold px-2 py-1 rounded">
