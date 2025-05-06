@@ -5,7 +5,7 @@ const Cameras = () => {
     return (
         <div>
             <h1 className="text-3xl font-semibold text-center my-6">Cameras</h1>
-            <ProductList category="cameras" />
+            <ProductList category="Cameras" />
         </div>
     )
 }

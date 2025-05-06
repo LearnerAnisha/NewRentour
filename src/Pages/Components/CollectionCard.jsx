@@ -14,8 +14,8 @@ const CollectionCard = () => {
             setIsLoading(true);
             try {
                 const [productsRes, imagesRes] = await Promise.all([
-                    axiosInstance.get(`${baseUrl}/api/home`, { timeout: 10000 }),
-                    axiosInstance.get(`${baseUrl}/api/ph`, { timeout: 10000 }),
+                    axiosInstance.get(`${baseUrl}/api/home`),
+                    axiosInstance.get(`${baseUrl}/api/ph`),
                 ]);
 
                 const allProducts = productsRes.data;
@@ -68,7 +68,7 @@ const CollectionCard = () => {
     return (
         <div className="flex flex-col items-center h-fit py-5 sm:py-14">
             <h2 className="text-xl sm:text-3xl underline font-semibold mb-6 sm:mb-12 tracking-wider text-center">
-                COLLECTIONS
+                CATEGORIES
             </h2>
             <div className="w-full flex flex-row shrink-0 flex-nowrap overflow-x-scroll snap-x md:overflow-hidden sm:flex-col gap-4 py-5 sm:gap-8 sm:py-10">
                 {isLoading ? (
@@ -106,7 +106,7 @@ const CollectionCard = () => {
                                         data-aos="fade-up"
                                         data-aos-delay={index * 100 + 150}
                                     >
-                                        {product.item_name}
+                                        {product.item_category}
                                     </h2>
                                     <p
                                         className="text-[12px] sm:text-[14px] font-[400] text-gray-700 leading-relaxed"
