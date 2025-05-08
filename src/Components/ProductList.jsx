@@ -34,7 +34,7 @@ const ProductList = ({ category }) => {
         };
 
         fetchProducts();
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top on page change
+        window.scrollTo({ top: 0, behavior: "smooth" }); 
     }, [category, page, sort]);
 
     const handleSortChange = (e) => setSort(e.target.value);

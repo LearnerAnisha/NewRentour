@@ -15,19 +15,35 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axiosInstance.get(`${baseUrl}/api/getitems/${id}`);
-                setProduct(res.data);
-                setMainImage(res.data.productAvatar);
+                const [productRes, imageRes] = await Promise.all([
+                    axiosInstance.get(`${baseUrl}/api/getitems/${id}`),
+                    axiosInstance.get(`http://127.0.0.1:8000/api/ph/`)
+                ]);
+    
+                const fetchedProduct = productRes.data;
+                const images = imageRes.data;
+
+                console.log(images);
+    
+                const matchedImage = images.find(img => img.item_name === fetchedProduct.item_name);
+                if (matchedImage) {
+                    fetchedProduct.productAvatar = matchedImage.item_photo;
+                    fetchedProduct.images = [matchedImage.item_photo]; 
+                }
+    
+                setProduct(fetchedProduct);
+                setMainImage(fetchedProduct.productAvatar);
             } catch (err) {
-                console.error("Error fetching product:", err);
+                console.error("Error fetching product or image:", err);
                 setProduct(null);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchProduct();
     }, [id, baseUrl]);
+    
 
     if (loading) return <div className="p-6 text-center">Loading product...</div>;
     if (!product)
@@ -42,7 +58,7 @@ const ProductDetail = () => {
                 {/* Main Product Image */}
                 <div className="w-full h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                     <img
-                        src={`${baseUrl}${mainImage}`}
+                        src={product.productAvatar || "/fallback.png"}
                         alt={product.item_name}
                         className="w-full h-full object-contain p-2"
                         onError={(e) => {
@@ -59,7 +75,7 @@ const ProductDetail = () => {
                             className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-95"
                         >
                             <img
-                                src={`${baseUrl}${img}`}
+                                src={product.productAvatar || "/fallback.png"}
                                 alt={`Thumbnail ${i}`}
                                 className="w-full h-full object-contain p-[2px]"
                                 onError={(e) => {
@@ -84,7 +100,7 @@ const ProductDetail = () => {
                         className="min-w-[140px] px-6 py-2 bg-green-600 text-white hover:bg-white hover:text-green-600 border border-green-600 transition-all duration-300"
                         onClick={() => {
                             addToCart(product.item_id);
-                          
+                        
                         }}
                     >
                         Buy Now
@@ -108,9 +124,9 @@ const ProductDetail = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-900 grow-1">
+                    {/* <p className="text-sm text-gray-900 grow-1">
                         Renter: {product.publisher_name || "Not Available"}
-                    </p>
+                    </p> */}
                     <p className="text-sm text-gray-800 md:w-[25%]">
                         Stock: {product.Quantity}
                     </p>
