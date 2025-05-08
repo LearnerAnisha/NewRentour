@@ -45,6 +45,9 @@ const SellerDashboard = lazy(() => import("./Seller/SellerDashboard"));
 const UploadProduts = lazy(() => import("./Seller/UploadedProduts"));
 const CreateForm = lazy(() => import("./Seller/CreateForm"));
 const UpdateForm = lazy(() => import("./Seller/UpdateFrom"));
+
+// Buynow page
+const Buynow = lazy(() => import("./Components/Buynow"));
 // Helper function to wrap lazy components in Suspense
 const LazyLoad = (Component) => (
   <Suspense fallback={<div className="text-center p-4">Loading...</div>}>
@@ -118,6 +121,9 @@ const Router = createBrowserRouter([
         ]
       },
     ],
+  },
+  {
+    path: "/buynow", element: LazyLoad(Buynow), errorElement: <ErrorBoundary />  // Buy now page
   },
   { path: "*", element: <Notfound />, errorElement: <ErrorBoundary /> }, // Handle unknown routes
 ]);
