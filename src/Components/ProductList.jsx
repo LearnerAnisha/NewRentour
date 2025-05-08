@@ -20,9 +20,9 @@ const ProductList = ({ category }) => {
                     headers: { "Content-Type": "application/json" }
                 });
 
-                console.log("API Response:", res.data);
+                // console.log("API Response:", res.data);
 
-                const allProducts = res?.data?.results || [];
+                const allProducts = res?.data || [];
                 setProducts(allProducts);
                 setTotalPages(Math.ceil(res?.data?.count / 12));
             } catch (err) {

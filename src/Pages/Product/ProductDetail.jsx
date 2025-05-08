@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useCart } from "../../GlobalState/CartContext";
 import { IoIosStar } from "react-icons/io";
 import axiosInstance from "../../utils/axiosInstance";
@@ -39,6 +39,7 @@ const ProductDetail = () => {
         <div className="w-[80%] mx-auto p-6 grid md:grid-cols-2 gap-8 bg-white my-[1%] rounded-lg">
             {/* Left Section */}
             <div>
+                {/* Main Product Image */}
                 <div className="w-full h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                     <img
                         src={`${baseUrl}${mainImage}`}
@@ -49,7 +50,7 @@ const ProductDetail = () => {
                         }}
                     />
                 </div>
-
+                {/* Thumbnails */}
                 <div className="flex gap-3 mt-4">
                     {product.images?.map((img, i) => (
                         <div
@@ -68,6 +69,28 @@ const ProductDetail = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* Buttons Below Image - Centered */}
+                <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button
+                        disabled={cartLoading}
+                        onClick={() => addToCart(product.item_id)}
+                        className="min-w-[140px] px-6 py-2 bg-black text-white hover:bg-white hover:text-black border border-black transition-all duration-300"
+                    >
+                        {cartLoading ? "Adding..." : "Add to Cart"}
+                    </button>
+                    <Link
+                        to={"/buynow"}
+                        className="min-w-[140px] px-6 py-2 bg-green-600 text-white hover:bg-white hover:text-green-600 border border-green-600 transition-all duration-300"
+                        onClick={() => {
+                            addToCart(product.item_id);
+                          
+                        }}
+                    >
+                        Buy Now
+                    </Link>
+                </div>
+
             </div>
 
             {/* Right Section */}
@@ -102,15 +125,6 @@ const ProductDetail = () => {
                             {product.weight && <li>Weight: {product.weight} kg</li>}
                             {product.length && <li>Length: {product.length} cm</li>}
                         </ul>
-                    </div>
-                    <div className="self-end w-fit min-w-fit">
-                        <button
-                            disabled={cartLoading}
-                            onClick={() => addToCart(product.item_id)}
-                            className="text-[13px] sm:text-[14px] cursor-pointer px-6 py-1 border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
-                        >
-                            {cartLoading ? "Adding..." : "Add to Cart"}
-                        </button>
                     </div>
                 </div>
 
