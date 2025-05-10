@@ -8,10 +8,10 @@ const Login = ({ handleSubmit, formData, handleBlur, handleInputChange, showPass
             <form onSubmit={(e) => handleSubmit(e, 'Sign In')}>
                 <h1 className='text-[14px] md:text-[18px] mt-[20px] sm:mt-[0px]'>Sign In</h1>
                 <div className="social-icons">
-                    <a href="#" className="icon" aria-label="Sign in with Google"><FaGooglePlusG /></a>
-                    <a href="#" className="icon" aria-label="Sign in with Facebook"><FaFacebookF /></a>
-                    <a href="#" className="icon" aria-label="Sign in with GitHub"><FaGithub /></a>
-                    <a href="#" className="icon" aria-label="Sign in with LinkedIn"><FaLinkedinIn /></a>
+                    <a href="http://127.0.0.1:8000/accounts/google/login/" className="icon" aria-label="Sign in with Google"><FaGooglePlusG /></a>
+                    {/* <a href="#" className="icon" aria-label="Sign in with Facebook"><FaFacebookF /></a> */}
+                    <a href="http://127.0.0.1:8000/social/login/github/" className="icon" aria-label="Sign in with GitHub"><FaGithub /></a>
+                    {/* <a href="#" className="icon" aria-label="Sign in with LinkedIn"><FaLinkedinIn /></a> */}
                 </div>
                 <span>or use your email and password</span>
 
