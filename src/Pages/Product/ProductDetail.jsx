@@ -146,37 +146,28 @@ const ProductDetail = () => {
 
                 <div className="mt-6">
                     <h3 className="text-xl font-semibold mb-2">Reviews</h3>
-                    {product.reviews?.length > 0 ? (
-                        product.reviews.map((review, idx) => (
-                            <div key={idx} className="border-t pt-3 mt-3">
-                                <div className="flex items-center gap-2">
-                                    <img
-                                        src={`${baseUrl}${review.profileImg}`}
-                                        alt="user"
-                                        className="w-8 h-8 object-contain rounded-full"
-                                        onError={(e) => {
-                                            e.currentTarget.src = "/fallback.png";
-                                        }}
-                                    />
-                                    <p className="font-medium">{review.user}</p>
-                                </div>
-                                <div className="flex items-center gap-1 mt-1">
-                                    {Array.from({ length: review.rating }, (_, i) => (
-                                        <IoIosStar key={i} className="text-yellow-500" />
-                                    ))}
-                                    {Array.from({ length: 5 - review.rating }, (_, i) => (
-                                        <span key={i} className="text-gray-300 text-lg">
-                                            ★
-                                        </span>
-                                    ))}
-                                </div>
-                                <p className="text-sm mt-1">{review.comment}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-sm text-gray-500">No reviews yet.</p>
-                    )}
-                </div>
+                    {product.reviews ? (
+        <div className="border-t pt-3 mt-3">
+            <div className="flex items-center gap-2">
+                <img
+                    src="/fallback.png"
+                    alt="user"
+                    className="w-8 h-8 object-contain rounded-full"
+                />
+                <p className="font-medium">Anonymous</p>
+            </div>
+            <div className="flex items-center gap-1 mt-1">
+                {[...Array(5)].map((_, i) => (
+                    <IoIosStar key={i} className="text-yellow-500" />
+                ))}
+            </div>
+            <p className="text-sm mt-1">{product.reviews}</p>
+        </div>
+    ) : (
+        <p className="text-sm text-gray-500">No reviews yet.</p>
+    )}
+</div>
+
             </div>
         </div>
     );
