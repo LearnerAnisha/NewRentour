@@ -4,6 +4,7 @@ import App from "./App";
 import { Notfound } from "./Components/NotFound";
 import ErrorBoundary from "./Components/ErrorBoundary"; // Import the Error Boundary
 import HomePage from "./Pages/HomePage";
+import Buynow from "./Pages/Payment";
 
 // Auth Forms
 const AuthForm = lazy(() => import("./Auth/AuthForm"));
@@ -47,7 +48,7 @@ const CreateForm = lazy(() => import("./Seller/CreateForm"));
 const UpdateForm = lazy(() => import("./Seller/UpdateFrom"));
 
 // Buynow page
-const Buynow = lazy(() => import("./Components/Buynow"));
+const buynow = lazy(() => import("./Pages/Payment"));
 // Helper function to wrap lazy components in Suspense
 const LazyLoad = (Component) => (
   <Suspense fallback={<div className="text-center p-4">Loading...</div>}>
