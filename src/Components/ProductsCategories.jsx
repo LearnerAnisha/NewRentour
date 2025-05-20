@@ -18,16 +18,16 @@ const ProductCategory = () => {
             // icon: "/featureproducts/camera.svg",
             path: "/collections/cameras"
         },
-        // {
-        //     name: "iPads",
-        //     // icon: "/featureproducts/tablet.svg",
-        //     path: "/collections/ipads"
-        // },
-        // {
-        //     name: "Headphones",
-        //     // icon: "/featureproducts/headphone.svg",
-        //     path: "/collections/headphones"
-        // },
+        {
+            name: "Monitors",
+            // icon: "/featureproducts/tablet.svg",
+            path: "/collections/Monitors"
+        },
+        {
+            name: "Headphones",
+            // icon: "/featureproducts/headphone.svg",
+            path: "/collections/Headphones"
+        },
         // {
         //     name: "Drones",
         //     // icon: "/featureproducts/drone.svg",
