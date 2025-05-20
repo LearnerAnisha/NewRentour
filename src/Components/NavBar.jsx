@@ -84,7 +84,7 @@ const NavBar = ({ toggleCart }) => {
                     {/* Cart Icon */}
                     <div onClick={toggleCart} className="relative cursor-pointer flex items-center justify-center" aria-label="Cart" title="Cart">
                         <BsCart4 className="text-[16px] sm:text-[24px]" />
-                        {cartItemCount > 0 && (
+                        {cartItemCount > 0 && isLoggedIn &&(
                             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                                 {cartItemCount}
                             </span>
