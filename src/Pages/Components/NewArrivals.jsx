@@ -112,7 +112,10 @@ const NewArrivals = () => {
                                         <div className="absolute inset-0 flex items-center justify-center group-hover:bg-opacity-80 hover:bg-[rgba(0,0,0,0.4)] hover:backdrop-blur-[8px] transition-all duration-300 ease-out">
                                             <div className="p-5 text-white opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-6 transition-all duration-500 ease-out text-center">
                                                 <h3 className="font-semibold text-lg mb-2">{product.item_name}</h3>
-                                                <p className="text-sm">{hoveredIndex === index ? typedText : ""}</p>
+                                                <p className="text-sm min-h-[48px] overflow-hidden transition-all duration-300 ease-out leading-snug">
+                                                    {hoveredIndex === index ? typedText : ""}
+                                                </p>
+
                                             </div>
                                         </div>
 
